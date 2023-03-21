@@ -11,6 +11,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
     private bool _isOffset;
+    //añadido nuevo
+    public GameObject personaje;
     // Método de inicialización de un Tile con offset
     public void Init(bool isOffset)
     {
