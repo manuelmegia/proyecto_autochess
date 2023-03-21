@@ -29,18 +29,11 @@ public class Tile : MonoBehaviour
 
         // Encontrar los Tiles en las posiciones de inicio y destino
         var startTile = gridManager.GetTileAtPosition(new Vector2(0, 0));
-        var targetTile = gridManager.GetTileAtPosition(new Vector2(7, 3));
+        var tilePosition = gridManager.GetTileAtPosition(transform.position);
 
         // Encontrar la ruta óptima entre los Tiles
-        var path = gridManager.FindPath(startTile.transform.position, targetTile.transform.position);
+        var path = gridManager.FindPath(startTile.transform.position, tilePosition.transform.position);
 
-        // Imprimir la ruta en la consola
-        //Toast.Show();
-        // Llamamos a la función FindPath del GridManager con la posición de inicio y la posición de destino
-
-        /*var path = _gridManager.FindPath(( x: 0, y: 0 ), ( x: 2, y: 5 ));
-        */
-        // Verificamos si se encontró un camino
         if (path != null)
         {
             // Cambiamos el color de los Tile en el camino
