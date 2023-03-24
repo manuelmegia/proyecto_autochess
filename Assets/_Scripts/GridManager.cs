@@ -11,8 +11,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile _tilePrefab;
     [SerializeField] private Transform _cam;
     // Variables privadas de la clase
-    private Dictionary<Vector2, Tile> _tiles;
+    public Dictionary<Vector2, Tile> _tiles;
     public Tile _lastTile;
+    public GameObject personaje;
 
     // Método Start que se ejecuta al inicio
     void Start()
