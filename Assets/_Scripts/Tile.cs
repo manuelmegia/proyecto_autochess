@@ -1,40 +1,49 @@
-// Importación de librerías necesarias
+// ImportaciÃ³n de librerÃ­as necesarias
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Declaración de la clase Tile, que hereda de MonoBehaviour
+// DeclaraciÃ³n de la clase Tile, que hereda de MonoBehaviour
 public class Tile : MonoBehaviour
 {
-    // Declaración de variables que se mostrarán en el Inspector de Unity
+    // DeclaraciÃ³n de variables que se mostrarÃ¡n en el Inspector de Unity
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
+    public BaseUnit OccupiedUnit;
+    public bool Walkable => OccupiedUnit == null;
     private bool _isOffset;
-    //añadido nuevo
+    //aÃ±adido nuevo
     public GameObject personaje;
-    // Método de inicialización de un Tile con offset
+    // MÃ©todo de inicializaciÃ³n de un Tile con offset
     public void Init(bool isOffset)
     {
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
 
-    // Método para establecer el color de un Tile
+    public void SetUnit(BaseUnit unit)
+    {
+        if (unit.OccupiedTile != null) unit.OccupiedTile.OccupiedUnit = null;
+        unit.transform.position = transform.position;
+        OccupiedUnit = spawnedHero;
+        unit.OccupiedTile = this;
+    }
+    // MÃ©todo para establecer el color de un Tile
     public void SetColor(Color color)
     {
         _renderer.color = color;
     }
 
-    // Propiedad para obtener si un Tile está en offset o no
+    // Propiedad para obtener si un Tile estÃ¡ en offset o no
     public bool IsOffset { get { return _isOffset; } }
 
-    // Método que se ejecuta cuando se hace click en un Tile
+    // MÃ©todo que se ejecuta cuando se hace click en un Tile
     public void OnMouseDown()
     {
         // Buscamos el objeto GridManager en la escena
         var gridManager = FindObjectOfType<GridManager>();
 
-        // Obtenemos el Tile de inicio para encontrar el camino óptimo
+        // Obtenemos el Tile de inicio para encontrar el camino Ã³ptimo
         Tile startTile;
         if (gridManager._lastTile == null)
         {
@@ -45,10 +54,10 @@ public class Tile : MonoBehaviour
             startTile = gridManager._lastTile;
         }
 
-        // Obtenemos la posición del Tile actual
+        // Obtenemos la posiciÃ³n del Tile actual
         var tilePosition = gridManager.GetTileAtPosition(transform.position);
 
-        // Encontramos la ruta óptima entre los Tiles
+        // Encontramos la ruta Ã³ptima entre los Tiles
         var path = gridManager.FindPath(startTile.transform.position, tilePosition.transform.position);
 
         if (path != null)
@@ -61,21 +70,21 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            Debug.Log("No se encontró un camino desde la posición de inicio hasta la posición de destino.");
+            Debug.Log("No se encontrÃ³ un camino desde la posiciÃ³n de inicio hasta la posiciÃ³n de destino.");
         }
 
-        // Actualizamos el último Tile seleccionado
+        // Actualizamos el Ãºltimo Tile seleccionado
         gridManager._lastTile = tilePosition;
     }
 
-    // Método que se ejecuta cuando el mouse entra en un Tile
+    // MÃ©todo que se ejecuta cuando el mouse entra en un Tile
     public void OnMouseEnter()
     {
         // Activamos el objeto que representa el resaltado
         _highlight.SetActive(true);
     }
 
-    // Método que se ejecuta cuando el mouse sale de un Tile
+    // MÃ©todo que se ejecuta cuando el mouse sale de un Tile
     public void OnMouseExit()
     {
         // Desactivamos el objeto que representa el resaltado
