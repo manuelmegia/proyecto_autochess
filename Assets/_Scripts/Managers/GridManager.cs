@@ -1,6 +1,7 @@
 // Importar las librerías necesarias
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Definición de la clase GridManager que hereda de MonoBehaviour
@@ -47,12 +48,16 @@ public class GridManager : MonoBehaviour
 
         // Se ajusta la posición de la cámara para que muestre toda la cuadrícula
         _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
-        GameManager.Instance.ChangeState(GameState.SpawnHeroes)
+        GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
     public Tile GetHeroSpawnTile()
     {
-        return _tiles.Where(t->t.Key.x < _width / 2 && t.Value.Walkable).OrderBy(t->Random.value).First().Value;
+        return _tiles.Where(t=>t.Key.x < _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+    }
+    public Tile GetEnemySpawnTile()
+    {
+        return _tiles.Where(t=>t.Key.x > _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
     }
     // Método que devuelve el Tile en una posición dada
     public Tile GetTileAtPosition(Vector2 pos)

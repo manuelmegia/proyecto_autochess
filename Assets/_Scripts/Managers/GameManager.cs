@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class GameManager : MonoBehaviour
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
             case GameState.FightState:
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null)
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
     }
 }

@@ -10,8 +10,10 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color _baseColor, _offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
+    [SerializeField] private bool _isWalkable;
+    
     public BaseUnit OccupiedUnit;
-    public bool Walkable => OccupiedUnit == null;
+    public bool Walkable => _isWalkable && OccupiedUnit == null;
     private bool _isOffset;
     //añadido nuevo
     public GameObject personaje;
@@ -25,7 +27,7 @@ public class Tile : MonoBehaviour
     {
         if (unit.OccupiedTile != null) unit.OccupiedTile.OccupiedUnit = null;
         unit.transform.position = transform.position;
-        OccupiedUnit = spawnedHero;
+        OccupiedUnit = unit;
         unit.OccupiedTile = this;
     }
     // Método para establecer el color de un Tile

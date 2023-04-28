@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -10,14 +12,14 @@ public class UnitManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-		units = Resources.LoadAll<ScriptableUnit>("Units").ToList();
+		_units = Resources.LoadAll<ScriptableUnit>("Units").ToList();
     }
 
     public void SpawnHeroes()
 	{
 		var heroCount = 1;
 		for (int i = 0; i < heroCount; i++){
-			var randomPrefab = GetTandomUnit<BaseHero>(Faction.Hero);
+			var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
 			var spawnedHero = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
 			
@@ -30,7 +32,7 @@ public class UnitManager : MonoBehaviour
 	{
 		var enemyCount = 1;
 		for (int i = 0; i < enemyCount; i++){
-			var randomPrefab = GetTandomUnit<BaseEnemy>(Faction.Enemy);
+			var randomPrefab = GetRandomUnit<BaseEnemy>(Faction.Enemy);
 			var spawnedEnemy = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
 			
@@ -38,7 +40,7 @@ public class UnitManager : MonoBehaviour
 		}
 		GameManager.Instance.ChangeState(GameState.FightState);
 	}
-	private T gerRandomUnit<T>(Faction faction) where T : BaseUnit {
-		return (T)_units.Where(u->u.Faction).OrderBy(o->Random.value).First().UnitPrefab;
+	private T GetRandomUnit<T>(Faction faction) where T : BaseUnit {
+		return (T)_units.Where(u => u.Faction == faction).OrderBy(o => Random.value).First().UnitPrefab;
 	}
 }
