@@ -44,5 +44,6 @@ public enum GameState
     GenerateGrid = 0,
     SpawnHeroes = 1,
     SpawnEnemies = 2,
-    FightState = 3
+    PreparationRound = 3,
+    FightState = 4
 }

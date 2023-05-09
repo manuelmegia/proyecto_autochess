@@ -39,6 +39,28 @@ public class Tile : MonoBehaviour
     // Propiedad para obtener si un Tile está en offset o no
     public bool IsOffset { get { return _isOffset; } }
 
+	//METODO DE TARODEV
+	void OnMouseDown() {
+		if(GameManager.Instance.GameState != GameState.HeroesTurn) return;
+	
+		if(OccupiedUnit != null) {
+			if(OccupiedUnit.Faction == Faction.hero) UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
+			else {
+				if (UnitManager.Instance.SelectedHero != null) {
+					var enemy = (BaseEnemy) OccupiedUnit;
+					Destroy(enemy.gameObject);
+					UnitManager.Instance.SetSelectedHero(null);
+				}
+			}
+		}
+		else {
+			if(UnitManager.Instance.SelectedHero != null) {
+				SetUnit(UnitManager.Instance.SelectedHero);
+				UnitManager.Instance.SelectedHero
+			}
+		}
+	}
+
     // Método que se ejecuta cuando se hace click en un Tile
     public void OnMouseDown()
     {
