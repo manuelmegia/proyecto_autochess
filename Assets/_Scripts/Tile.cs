@@ -41,10 +41,10 @@ public class Tile : MonoBehaviour
 
 	//METODO DE TARODEV
 	void OnMouseDown() {
-		if(GameManager.Instance.GameState != GameState.HeroesTurn) return;
+		if(GameManager.Instance.GameState != GameState.FightState) return;
 	
 		if(OccupiedUnit != null) {
-			if(OccupiedUnit.Faction == Faction.hero) UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
+			if(OccupiedUnit.Faction == Faction.Hero) UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
 			else {
 				if (UnitManager.Instance.SelectedHero != null) {
 					var enemy = (BaseEnemy) OccupiedUnit;
@@ -56,13 +56,13 @@ public class Tile : MonoBehaviour
 		else {
 			if(UnitManager.Instance.SelectedHero != null) {
 				SetUnit(UnitManager.Instance.SelectedHero);
-				UnitManager.Instance.SelectedHero
-			}
+                UnitManager.Instance.SetSelectedHero(null);
+            }
 		}
 	}
 
     // Método que se ejecuta cuando se hace click en un Tile
-    public void OnMouseDown()
+    /*public void OnMouseDown()
     {
         // Buscamos el objeto GridManager en la escena
         var gridManager = FindObjectOfType<GridManager>();
@@ -100,7 +100,7 @@ public class Tile : MonoBehaviour
         // Actualizamos el último Tile seleccionado
         gridManager._lastTile = tilePosition;
     }
-
+*/
     // Método que se ejecuta cuando el mouse entra en un Tile
     public void OnMouseEnter()
     {
