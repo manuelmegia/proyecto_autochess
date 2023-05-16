@@ -106,6 +106,7 @@ public class Tile : MonoBehaviour
     {
         // Activamos el objeto que representa el resaltado
         _highlight.SetActive(true);
+        MenuManager.Instance.ShowTileInfo(this);
     }
 
     // Método que se ejecuta cuando el mouse sale de un Tile
@@ -113,6 +114,7 @@ public class Tile : MonoBehaviour
     {
         // Desactivamos el objeto que representa el resaltado
         _highlight.SetActive(false);
+        MenuManager.Instance.ShowTileInfo(null);
     }
 
 }
