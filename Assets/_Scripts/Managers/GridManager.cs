@@ -14,12 +14,22 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform _cam;
     // Variables privadas de la clase
     public Dictionary<Vector2, Tile> _tiles;
+    public Dictionary<Vector2, Tile> _benchTiles = new Dictionary<Vector2, Tile>();
     public Tile _lastTile;
     public GameObject personaje;
 
     void Awake()
     {
         Instance = this;
+        
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Bench");
+        foreach (GameObject tileGameObject in tiles)
+        {
+            Vector2 position = new Vector2(tileGameObject.transform.position.x, tileGameObject.transform.position.y);
+            Tile tileComponent = tileGameObject.GetComponent<Tile>();
+            _benchTiles[position] = tileComponent;
+        }
+
     }
     // Método Start que se ejecuta al inicio
     
@@ -53,11 +63,12 @@ public class GridManager : MonoBehaviour
 
     public Tile GetHeroSpawnTile()
     {
-        return _tiles.Where(t=>t.Key.x < _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+        //return _tiles.Where(t=>t.Key.y < _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+        return _benchTiles.Where(t=> t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
     }
     public Tile GetEnemySpawnTile()
     {
-        return _tiles.Where(t=>t.Key.x > _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+        return _tiles.Where(t=>t.Key.y > _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
     }
     // Método que devuelve el Tile en una posición dada
     public Tile GetTileAtPosition(Vector2 pos)

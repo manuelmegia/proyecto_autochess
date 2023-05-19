@@ -39,10 +39,23 @@ public class Tile : MonoBehaviour
     // Propiedad para obtener si un Tile está en offset o no
     public bool IsOffset { get { return _isOffset; } }
 
+    public void DestroyOccupiedUnit()
+    {
+        if (OccupiedUnit != null)
+        {
+            Destroy(OccupiedUnit.gameObject);
+            OccupiedUnit = null;
+        }
+    }
+
 	//METODO DE TARODEV
 	void OnMouseDown() {
+        if (this.CompareTag("Basura"))
+        {
+            DestroyOccupiedUnit();
+        }
 		if(GameManager.Instance.GameState != GameState.FightState) return;
-	
+	    
 		if(OccupiedUnit != null) {
 			if(OccupiedUnit.Faction == Faction.Hero) UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
 			else {

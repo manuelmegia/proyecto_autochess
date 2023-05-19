@@ -32,7 +32,7 @@ public class UnitManager : MonoBehaviour
 
 	public void SpawnEnemies()
 	{
-		var enemyCount = 1;
+		var enemyCount = 3;
 		for (int i = 0; i < enemyCount; i++){
 			var randomPrefab = GetRandomUnit<BaseEnemy>(Faction.Enemy);
 			var spawnedEnemy = Instantiate(randomPrefab);
