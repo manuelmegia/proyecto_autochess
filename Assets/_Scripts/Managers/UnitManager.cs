@@ -25,6 +25,7 @@ public class UnitManager : MonoBehaviour
 			var spawnedHero = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
 			
+			spawnedHero.OccupiedTile = randomSpawnTile; // Add this line
 			randomSpawnTile.SetUnit(spawnedHero);
 		}
 		GameManager.Instance.ChangeState(GameState.SpawnEnemies);
@@ -38,6 +39,7 @@ public class UnitManager : MonoBehaviour
 			var spawnedEnemy = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
 			
+			spawnedEnemy.OccupiedTile = randomSpawnTile; // Add this line
 			randomSpawnTile.SetUnit(spawnedEnemy);
 		}
 		GameManager.Instance.ChangeState(GameState.FightState);

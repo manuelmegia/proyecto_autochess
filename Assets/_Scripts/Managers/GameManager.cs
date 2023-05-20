@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
                 UnitManager.Instance.SpawnEnemies();
                 break;
             case GameState.FightState:
+                //FightManager.Instance.StartFight();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

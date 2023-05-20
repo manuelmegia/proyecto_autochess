@@ -23,12 +23,16 @@ public class Tile : MonoBehaviour
         _renderer.color = isOffset ? _offsetColor : _baseColor;
     }
 
-    public void SetUnit(BaseUnit unit)
+    /*public void SetUnit(BaseUnit unit)
     {
         if (unit.OccupiedTile != null) unit.OccupiedTile.OccupiedUnit = null;
         unit.transform.position = transform.position;
         OccupiedUnit = unit;
         unit.OccupiedTile = this;
+    }*/
+    public void SetUnit(BaseUnit unit)
+    {
+        personaje = unit != null ? unit.gameObject : null;
     }
     // Método para establecer el color de un Tile
     public void SetColor(Color color)

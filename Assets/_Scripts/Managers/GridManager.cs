@@ -63,8 +63,8 @@ public class GridManager : MonoBehaviour
 
     public Tile GetHeroSpawnTile()
     {
-        //return _tiles.Where(t=>t.Key.y < _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
-        return _benchTiles.Where(t=> t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+        return _tiles.Where(t=>t.Key.y < _height / 2 && t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
+        //return _benchTiles.Where(t=> t.Value.Walkable).OrderBy(t=>Random.value).First().Value;
     }
     public Tile GetEnemySpawnTile()
     {
@@ -155,7 +155,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Devuelve las posiciones vecinas de una posición dada
-    private List<Vector2> GetNeighborPositions(Vector2 pos)
+    public List<Vector2> GetNeighborPositions(Vector2 pos)
     {
         var result = new List<Vector2>();
         result.Add(pos + Vector2.up);
@@ -175,5 +175,32 @@ public class GridManager : MonoBehaviour
     private float CalculateHCost(Vector2 pos, Vector2 targetPos)
     {
         return Mathf.Abs(pos.x - targetPos.x) + Mathf.Abs(pos.y - targetPos.y);
+    }
+    
+    public Tile FindClosestEnemyTile(Vector2 startPos, Faction faction)
+    {
+        Tile closestTile = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (var tile in _tiles.Values)
+        {
+            if (tile.personaje != null)
+            {
+                var unit = tile.personaje.GetComponent<BaseUnit>();
+
+                if (unit != null && unit.Faction != faction)
+                {
+                    float distance = Vector2.Distance(startPos, tile.transform.position);
+
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        closestTile = tile;
+                    }
+                }
+            }
+        }
+
+        return closestTile;
     }
 }
