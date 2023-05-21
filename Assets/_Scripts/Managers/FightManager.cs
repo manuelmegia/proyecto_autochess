@@ -14,33 +14,90 @@ public class FightManager : MonoBehaviour
         if (_timer >= actionInterval)
         {
             _timer = 0;
-            PerformActions();
+            StartCoroutine(PerformActionsCoroutine());
         }
     }
 
-    private void PerformActions()
+    private IEnumerator PerformActionsCoroutine()
     {
         var units = FindObjectsOfType<BaseUnit>();
         var gridManager = FindObjectOfType<GridManager>();
 
+        List<Coroutine> moveCoroutines = new List<Coroutine>();
+
         foreach (var unit in units)
         {
-            var currentPosition = unit.OccupiedTile.transform.position;
-            var targetTile = gridManager.FindClosestEnemyTile(currentPosition, unit.Faction);
-
-            if (targetTile != null)
+            if (unit != null && unit.OccupiedTile != null)
             {
-                var path = gridManager.FindPath(currentPosition, targetTile.transform.position);
-
-                if (path != null && path.Count > 1)
+                // Add debug logs to check if hero units are being processed
+                if (unit.Faction == Faction.Hero)
                 {
-                    unit.MoveToTile(path[1]);
+                    Debug.Log("Processing hero unit: " + unit.name);
                 }
-                else if (path != null && path.Count == 1)
+
+                var currentPosition = unit.OccupiedTile.transform.position;
+                var targetTile = gridManager.FindClosestEnemyTile(currentPosition, unit.Faction);
+
+                if (targetTile != null)
                 {
-                    // Attack logic here
+                    var path = gridManager.FindPath(currentPosition, targetTile.transform.position);
+
+                    if (path != null && path.Count > 1)
+                    {
+                        Coroutine moveCoroutine = StartCoroutine(unit.MoveUnitToTile(path[1], 0.5f));
+                        moveCoroutines.Add(moveCoroutine);
+                    }
+                    else if (path != null && path.Count == 1)
+                    {
+                        // Attack logic
+                        var targetUnit = targetTile.personaje.GetComponent<BaseUnit>();
+                        if (targetUnit != null)
+                        {
+                            unit.Attack(targetUnit);
+                        }
+                    }
                 }
             }
+
+            // Wait for all move coroutines to finish
+            foreach (var moveCoroutine in moveCoroutines)
+            {
+                yield return moveCoroutine;
+            }
+        }
+        CheckWinCondition();
+    }
+
+    private void CheckWinCondition()
+    {
+        var units = FindObjectsOfType<BaseUnit>();
+        bool heroesAlive = false;
+        bool enemiesAlive = false;
+
+        foreach (var unit in units)
+        {
+            if (unit.Faction == Faction.Hero)
+            {
+                heroesAlive = true;
+            }
+            else if (unit.Faction == Faction.Enemy)
+            {
+                enemiesAlive = true;
+            }
+
+            if (heroesAlive && enemiesAlive)
+            {
+                break;
+            }
+        }
+
+        if (!heroesAlive)
+        {
+            Debug.Log("Enemy faction has won!");
+        }
+        else if (!enemiesAlive)
+        {
+            Debug.Log("Hero faction has won!");
         }
     }
 }

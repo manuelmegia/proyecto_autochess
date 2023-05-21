@@ -15,6 +15,11 @@ public class UnitManager : MonoBehaviour
     {
         Instance = this;
 		_units = Resources.LoadAll<ScriptableUnit>("Units").ToList();
+		Debug.Log("List of components in _units:");
+		foreach (var unit in _units)
+		{
+			Debug.Log($"Unit Name: {unit.UnitPrefab.UnitName}, Faction: {unit.Faction}");
+		}
     }
 
     public void SpawnHeroes()
@@ -25,8 +30,9 @@ public class UnitManager : MonoBehaviour
 			var spawnedHero = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
 			
+			randomSpawnTile.SetUnit(spawnedHero); // Make sure this line is called
+			
 			spawnedHero.OccupiedTile = randomSpawnTile; // Add this line
-			randomSpawnTile.SetUnit(spawnedHero);
 		}
 		GameManager.Instance.ChangeState(GameState.SpawnEnemies);
 	}
