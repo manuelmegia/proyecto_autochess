@@ -177,9 +177,9 @@ public class GridManager : MonoBehaviour
         return Mathf.Abs(pos.x - targetPos.x) + Mathf.Abs(pos.y - targetPos.y);
     }
     
-    public Tile FindClosestEnemyTile(Vector2 startPos, Faction faction)
+    public BaseUnit FindClosestEnemyUnit(Vector2 startPos, Faction faction)
     {
-        Tile closestTile = null;
+        BaseUnit closestUnit = null;
         float minDistance = Mathf.Infinity;
 
         foreach (var tile in _tiles.Values)
@@ -195,12 +195,16 @@ public class GridManager : MonoBehaviour
                     if (distance < minDistance)
                     {
                         minDistance = distance;
-                        closestTile = tile;
+                        closestUnit = unit;
                     }
                 }
             }
         }
-
-        return closestTile;
+        return closestUnit;
     }
+    public bool IsTileOccupied(Tile tile)
+    {
+        return tile.personaje != null;
+    }
+    
 }

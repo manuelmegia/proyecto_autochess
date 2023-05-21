@@ -24,49 +24,50 @@ public class FightManager : MonoBehaviour
         var gridManager = FindObjectOfType<GridManager>();
 
         List<Coroutine> moveCoroutines = new List<Coroutine>();
-
+        List<Coroutine> attackCoroutines = new List<Coroutine>();
+    
         foreach (var unit in units)
         {
-            if (unit != null && unit.OccupiedTile != null)
+            if (unit != null && unit.OccupiedTile != null && !unit.IsAttacking)
             {
-                // Add debug logs to check if hero units are being processed
-                if (unit.Faction == Faction.Hero)
-                {
-                    Debug.Log("Processing hero unit: " + unit.name);
-                }
-
                 var currentPosition = unit.OccupiedTile.transform.position;
-                var targetTile = gridManager.FindClosestEnemyTile(currentPosition, unit.Faction);
+                var targetUnit = gridManager.FindClosestEnemyUnit(currentPosition, unit.Faction);
 
-                if (targetTile != null)
+                if (targetUnit != null)
                 {
-                    var path = gridManager.FindPath(currentPosition, targetTile.transform.position);
+                    var path = gridManager.FindPath(currentPosition, targetUnit.OccupiedTile.transform.position);
 
-                    if (path != null && path.Count > 1)
+                    // Check if the path exists and the target tile is not occupied
+                    if (path != null && path.Count > 2 && !gridManager.IsTileOccupied(path[1]))
                     {
                         Coroutine moveCoroutine = StartCoroutine(unit.MoveUnitToTile(path[1], 0.5f));
                         moveCoroutines.Add(moveCoroutine);
                     }
-                    else if (path != null && path.Count == 1)
+                    else if (path != null && path.Count <= 2 && Vector3.Distance(currentPosition, targetUnit.OccupiedTile.transform.position) <= unit.AttackRange && !unit.IsAttacking)
                     {
-                        // Attack logic
-                        var targetUnit = targetTile.personaje.GetComponent<BaseUnit>();
-                        if (targetUnit != null)
-                        {
-                            unit.Attack(targetUnit);
-                        }
+                        Coroutine attackCoroutine = StartCoroutine(unit.AttackCoroutine(targetUnit, 0.5f));
+                        attackCoroutines.Add(attackCoroutine);
                     }
                 }
             }
-
-            // Wait for all move coroutines to finish
-            foreach (var moveCoroutine in moveCoroutines)
-            {
-                yield return moveCoroutine;
-            }
         }
+
+        // Wait for all attack coroutines to finish
+        foreach (var attackCoroutine in attackCoroutines)
+        {
+            yield return attackCoroutine;
+        }
+
+        // Wait for all move coroutines to finish
+        foreach (var moveCoroutine in moveCoroutines)
+        {
+            yield return moveCoroutine;
+        }
+
         CheckWinCondition();
     }
+
+
 
     private void CheckWinCondition()
     {

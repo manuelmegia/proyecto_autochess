@@ -9,6 +9,7 @@ public class BaseUnit : MonoBehaviour
     public int Health;
     public int AttackDamage;
     public float AttackRange;
+    public bool IsAttacking { get; private set; }
     
     public void MoveToTile(Tile targetTile)
     {
@@ -53,6 +54,48 @@ public class BaseUnit : MonoBehaviour
             targetUnit.Die();
         }
     }
+    public IEnumerator AttackCoroutine(BaseUnit targetUnit, float attackDuration)
+    {
+        IsAttacking = true;
+
+        // Perform attack animation or delay here, if needed
+        yield return new WaitForSeconds(attackDuration);
+
+        // Check if target unit is dead before continuing the attack
+        if (targetUnit.IsDead())
+        {
+            Debug.Log("Target unit " + targetUnit.UnitName + " is dead. Stopping attack.");
+            IsAttacking = false;
+            yield break;
+        }
+
+        // Check if the target unit is within attack range (including diagonals)
+        var distance = Vector3.Distance(this.transform.position, targetUnit.transform.position);
+        if (distance <= AttackRange)
+        {
+            targetUnit.Health -= AttackDamage;
+
+            // Display the remaining health of the target unit
+            Debug.Log("Target unit " + targetUnit.UnitName + " has " + targetUnit.Health + " health remaining.");
+
+            if (targetUnit.Health <= 0)
+            {
+                targetUnit.Die();
+                IsAttacking = false; // Set IsAttacking to false when the target unit is dead
+            }
+            else
+            {
+                StartCoroutine(AttackCoroutine(targetUnit, attackDuration)); // Continue attacking the same target unit
+            }
+        }
+        else
+        {
+            IsAttacking = false;
+            Debug.Log("Target unit " + targetUnit.UnitName + " is out of attack range.");
+        }
+    }
+
+
     public void Die()
     {
         if (OccupiedTile != null)

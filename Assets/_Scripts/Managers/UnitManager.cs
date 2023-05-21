@@ -24,7 +24,7 @@ public class UnitManager : MonoBehaviour
 
     public void SpawnHeroes()
 	{
-		var heroCount = 1;
+		var heroCount = 4;
 		for (int i = 0; i < heroCount; i++){
 			var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
 			var spawnedHero = Instantiate(randomPrefab);
@@ -39,7 +39,7 @@ public class UnitManager : MonoBehaviour
 
 	public void SpawnEnemies()
 	{
-		var enemyCount = 3;
+		var enemyCount = 4;
 		for (int i = 0; i < enemyCount; i++){
 			var randomPrefab = GetRandomUnit<BaseEnemy>(Faction.Enemy);
 			var spawnedEnemy = Instantiate(randomPrefab);

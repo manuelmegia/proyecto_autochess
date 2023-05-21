@@ -102,4 +102,4 @@ MonoBehaviour:
   Faction: 0
   Health: 100
   AttackDamage: 20
-  AttackRange: 1
+  AttackRange: 2
