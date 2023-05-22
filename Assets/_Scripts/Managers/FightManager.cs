@@ -4,17 +4,30 @@ using UnityEngine;
 
 public class FightManager : MonoBehaviour
 {
+    public static FightManager Instance;
+
     public float actionInterval = 1f;
     private float _timer;
 
+    void Awake()
+    {
+        Instance = this;
+    }
+    /*public void StartFight()
+    {
+        StartCoroutine(PerformActionsCoroutine());
+    }*/
     void Update()
     {
-        _timer += Time.deltaTime;
-
-        if (_timer >= actionInterval)
+        if (GameManager.Instance.GameState == GameState.FightState)
         {
-            _timer = 0;
-            StartCoroutine(PerformActionsCoroutine());
+            _timer += Time.deltaTime;
+
+            if (_timer >= actionInterval)
+            {
+                _timer = 0;
+                StartCoroutine(PerformActionsCoroutine());
+            }
         }
     }
 
@@ -72,33 +85,27 @@ public class FightManager : MonoBehaviour
     private void CheckWinCondition()
     {
         var units = FindObjectsOfType<BaseUnit>();
-        bool heroesAlive = false;
-        bool enemiesAlive = false;
+        Faction? winningFaction = null;
 
         foreach (var unit in units)
         {
-            if (unit.Faction == Faction.Hero)
-            {
-                heroesAlive = true;
-            }
-            else if (unit.Faction == Faction.Enemy)
-            {
-                enemiesAlive = true;
-            }
+            if (unit.IsDead()) continue; // Skip dead units
 
-            if (heroesAlive && enemiesAlive)
+            if (winningFaction == null)
             {
-                break;
+                winningFaction = unit.Faction; // Set the initial winning faction
+            }
+            else if (winningFaction != unit.Faction)
+            {
+                return; // If there are units from multiple factions alive, no one has won yet
             }
         }
 
-        if (!heroesAlive)
+        if (winningFaction != null)
         {
-            Debug.Log("Enemy faction has won!");
-        }
-        else if (!enemiesAlive)
-        {
-            Debug.Log("Hero faction has won!");
+            Debug.Log(winningFaction + " faction has won!");
+            //UnitManager.Instance.SpawnHeroes();
+            RoundManager.Instance.EndRound();
         }
     }
 }

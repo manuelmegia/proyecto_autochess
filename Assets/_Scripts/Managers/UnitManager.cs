@@ -10,7 +10,12 @@ public class UnitManager : MonoBehaviour
 	private List<ScriptableUnit> _units;
 
 	public BaseHero SelectedHero;
+	private int enemyCount;
 
+	public void IncreaseEnemyCount(int amount)
+	{
+		enemyCount += amount;
+	}
     void Awake()
     {
         Instance = this;
@@ -21,7 +26,19 @@ public class UnitManager : MonoBehaviour
 			Debug.Log($"Unit Name: {unit.UnitPrefab.UnitName}, Faction: {unit.Faction}");
 		}
     }
-
+    public void SpawnBenchHeroes()
+    {
+	    var heroCount = 1;
+	    for (int i = 0; i < heroCount; i++){
+		    var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
+		    var spawnedHero = Instantiate(randomPrefab);
+		    var randomSpawnTile = GridManager.Instance.GetHeroBenchSpawnTile();
+			
+		    randomSpawnTile.SetUnit(spawnedHero); // Make sure this line is called
+			
+		    spawnedHero.OccupiedTile = randomSpawnTile; // Add this line
+	    }
+    }
     public void SpawnHeroes()
 	{
 		var heroCount = 4;
@@ -39,7 +56,6 @@ public class UnitManager : MonoBehaviour
 
 	public void SpawnEnemies()
 	{
-		var enemyCount = 4;
 		for (int i = 0; i < enemyCount; i++){
 			var randomPrefab = GetRandomUnit<BaseEnemy>(Faction.Enemy);
 			var spawnedEnemy = Instantiate(randomPrefab);

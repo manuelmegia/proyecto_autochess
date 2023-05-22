@@ -58,12 +58,12 @@ public class Tile : MonoBehaviour
     }
 
 	//METODO DE TARODEV
-	void OnMouseDown() {
+	/*public void OnMouseDown() {
         if (this.CompareTag("Basura"))
         {
             DestroyOccupiedUnit();
         }
-		if(GameManager.Instance.GameState != GameState.FightState) return;
+		//if(GameManager.Instance.GameState != GameState.FightState) return;
 	    
 		if(OccupiedUnit != null) {
 			if(OccupiedUnit.Faction == Faction.Hero) UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
@@ -81,7 +81,7 @@ public class Tile : MonoBehaviour
                 UnitManager.Instance.SetSelectedHero(null);
             }
 		}
-	}
+	}/*
 
     // Método que se ejecuta cuando se hace click en un Tile
     /*public void OnMouseDown()

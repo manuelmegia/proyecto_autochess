@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour
             case GameState.SpawnEnemies:
                 UnitManager.Instance.SpawnEnemies();
                 break;
+            case GameState.PreparationRound:
+                EconomyManager.Instance.CalculateCoins();
+                RoundManager.Instance.RepositionUnits();
+                break;
             case GameState.FightState:
                 //FightManager.Instance.StartFight();
                 break;

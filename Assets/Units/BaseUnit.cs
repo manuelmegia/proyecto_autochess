@@ -10,7 +10,53 @@ public class BaseUnit : MonoBehaviour
     public int AttackDamage;
     public float AttackRange;
     public bool IsAttacking { get; private set; }
+    private BaseUnit selectedUnit;
+
     
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(1)) // Right click
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+            if(Physics.Raycast(ray, out hit))
+            {
+                BaseUnit unit = hit.transform.GetComponent<BaseUnit>();
+                if(unit != null)
+                {
+                    StatsDisplay.Instance.ShowStats(unit);
+                }
+            }
+        }
+        if(GameManager.Instance.GameState != GameState.PreparationRound)
+            return;
+    
+        if(Input.GetMouseButtonDown(0)) // Left click
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+            if(Physics.Raycast(ray, out hit))
+            {
+                BaseUnit unit = hit.transform.GetComponent<BaseUnit>();
+                if(unit != null && unit.Faction == Faction.Hero)
+                {
+                    selectedUnit = unit;
+                }
+                else if(selectedUnit != null)
+                {
+                    Tile tile = hit.transform.GetComponent<Tile>();
+                    if(tile != null && !tile.OccupiedUnit)
+                    {
+                        selectedUnit.MoveToTile(tile);
+                        selectedUnit = null; // Deselect unit after moving
+                    }
+                }
+            }
+        }
+    }
+
     public void MoveToTile(Tile targetTile)
     {
         if (OccupiedTile != null)
