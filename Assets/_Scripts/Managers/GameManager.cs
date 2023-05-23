@@ -38,6 +38,19 @@ public class GameManager : MonoBehaviour
             case GameState.FightState:
                 //FightManager.Instance.StartFight();
                 break;
+            case GameState.EndState:
+                var unit= FindObjectsOfType<BaseUnit>();
+                foreach (BaseUnit baseUnit in unit)
+                {
+                    baseUnit.Die();
+                }
+
+                // Reset rounds and gold
+                RoundManager.Instance.round = 0;
+                EconomyManager.Instance.coins = 0;
+                // Call the SpawnHeroes method
+                UnitManager.Instance.SpawnHeroes();
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
@@ -50,5 +63,6 @@ public enum GameState
     SpawnHeroes = 1,
     SpawnEnemies = 2,
     PreparationRound = 3,
-    FightState = 4
+    FightState = 4,
+    EndState = 5
 }

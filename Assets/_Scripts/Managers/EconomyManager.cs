@@ -6,7 +6,7 @@ using UnityEngine;
 public class EconomyManager : MonoBehaviour
 {
     public static EconomyManager Instance;
-    private int coins;
+    public int coins;
 
     void Awake()
     {

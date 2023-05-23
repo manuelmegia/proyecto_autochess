@@ -25,6 +25,7 @@ public class UnitManager : MonoBehaviour
 		{
 			Debug.Log($"Unit Name: {unit.UnitPrefab.UnitName}, Faction: {unit.Faction}");
 		}
+		enemyCount = 1;
     }
     public void SpawnBenchHeroes()
     {

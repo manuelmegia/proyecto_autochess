@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FightManager : MonoBehaviour
 {
     public static FightManager Instance;
-
+    private DataService _dataService;
+    public Text topScoresText;
+    
     public float actionInterval = 1f;
     private float _timer;
 
     void Awake()
     {
         Instance = this;
+        _dataService = new DataService("GameDatabase.db");
     }
     /*public void StartFight()
     {
@@ -29,6 +33,10 @@ public class FightManager : MonoBehaviour
                 StartCoroutine(PerformActionsCoroutine());
             }
         }
+        /*else if(GameManager.Instance.GameState == GameState.EndState)
+        {
+            StopCoroutine(PerformActionsCoroutine());
+        }*/
     }
 
     private IEnumerator PerformActionsCoroutine()
@@ -85,27 +93,47 @@ public class FightManager : MonoBehaviour
     private void CheckWinCondition()
     {
         var units = FindObjectsOfType<BaseUnit>();
-        Faction? winningFaction = null;
+        bool heroesAlive = false;
+        bool enemiesAlive = false;
 
         foreach (var unit in units)
         {
-            if (unit.IsDead()) continue; // Skip dead units
-
-            if (winningFaction == null)
+            if (unit.Faction == Faction.Hero)
             {
-                winningFaction = unit.Faction; // Set the initial winning faction
+                heroesAlive = true;
             }
-            else if (winningFaction != unit.Faction)
+            else if (unit.Faction == Faction.Enemy)
             {
-                return; // If there are units from multiple factions alive, no one has won yet
+                enemiesAlive = true;
+            }
+
+            if (heroesAlive && enemiesAlive)
+            {
+                break;
             }
         }
-
-        if (winningFaction != null)
+        if (!heroesAlive)
         {
-            Debug.Log(winningFaction + " faction has won!");
-            //UnitManager.Instance.SpawnHeroes();
+            Debug.Log("Enemy faction has won!");
+            var score = new Score { Round = RoundManager.Instance.GetCurrentRound(), Gold = EconomyManager.Instance.GetCoins() };
+            _dataService.CreateScore(score);
+            DisplayTopScores();
+            GameManager.Instance.ChangeState(GameState.EndState);
+        }
+        else if (!enemiesAlive)
+        {
+            Debug.Log("Hero faction has won!");
             RoundManager.Instance.EndRound();
         }
+    }
+    public void DisplayTopScores()
+    {
+        var scores = _dataService.GetTopScores(5);
+        string scoreText = "";
+        foreach (var score in scores)
+        {
+            scoreText += "Round: " + score.Round + ", Gold: " + score.Gold + "\n";
+        }
+        topScoresText.text = scoreText;
     }
 }
