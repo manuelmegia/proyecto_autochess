@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
                 // Reset rounds and gold
                 RoundManager.Instance.round = 0;
                 EconomyManager.Instance.coins = 0;
+                UIManager.Instance.UpdateCoinText(0);
+                UIManager.Instance.UpdateRoundText(0);
                 // Call the SpawnHeroes method
                 UnitManager.Instance.SpawnHeroes();
                 break;

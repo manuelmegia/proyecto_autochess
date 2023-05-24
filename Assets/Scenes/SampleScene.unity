@@ -2349,7 +2349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topScoresText: {fileID: 2020632859}
-  actionInterval: 1
+  actionInterval: 0.5
 --- !u!1 &1252888533 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8480987438610355268, guid: 816fd2ef1b5cd094bbd3045780631191, type: 3}
@@ -2929,6 +2929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedHero: {fileID: 0}
+  enemyCount: 0
 --- !u!4 &1573284995
 Transform:
   m_ObjectHideFlags: 0

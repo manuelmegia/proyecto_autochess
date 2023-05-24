@@ -10,7 +10,7 @@ public class UnitManager : MonoBehaviour
 	private List<ScriptableUnit> _units;
 
 	public BaseHero SelectedHero;
-	private int enemyCount;
+	public int enemyCount;
 
 	public void IncreaseEnemyCount(int amount)
 	{

@@ -118,6 +118,7 @@ public class FightManager : MonoBehaviour
             var score = new Score { Round = RoundManager.Instance.GetCurrentRound(), Gold = EconomyManager.Instance.GetCoins() };
             _dataService.CreateScore(score);
             DisplayTopScores();
+            UnitManager.Instance.enemyCount = 1;
             GameManager.Instance.ChangeState(GameState.EndState);
         }
         else if (!enemiesAlive)
