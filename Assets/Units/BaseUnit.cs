@@ -90,6 +90,7 @@ public class BaseUnit : MonoBehaviour
     transform.position = targetPosition;
     OccupiedTile = targetTile;
     targetTile.SetUnit(this);
+    targetTile.Reserved = false;
 }
     public void Attack(BaseUnit targetUnit)
     {

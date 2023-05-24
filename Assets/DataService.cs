@@ -20,9 +20,14 @@ public class DataService
         _connection.Insert(score);
     }
 
-    public List<Score> GetTopScores(int limit)
+    /*public List<Score> GetTopScores(int limit)
     {
         return _connection.Table<Score>().OrderByDescending(x => x.Round).Take(limit).ToList();
+    }*/
+    public IEnumerable<Score> GetTopScores()
+    {
+        const string query = "SELECT * FROM Score ORDER BY Round DESC, Gold DESC LIMIT 5";
+        return _connection.Query<Score>(query);
     }
 }
 

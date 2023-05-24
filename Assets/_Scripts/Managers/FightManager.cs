@@ -59,8 +59,9 @@ public class FightManager : MonoBehaviour
                     var path = gridManager.FindPath(currentPosition, targetUnit.OccupiedTile.transform.position);
 
                     // Check if the path exists and the target tile is not occupied
-                    if (path != null && path.Count > 2 && !gridManager.IsTileOccupied(path[1]))
+                    if (path != null && path.Count > 1 && !gridManager.IsTileOccupied(path[1]) && !path[1].Reserved) // Check if the target tile is occupied or reserved
                     {
+                        path[1].Reserved = true;
                         Coroutine moveCoroutine = StartCoroutine(unit.MoveUnitToTile(path[1], 0.5f));
                         moveCoroutines.Add(moveCoroutine);
                     }
@@ -129,8 +130,8 @@ public class FightManager : MonoBehaviour
     }
     public void DisplayTopScores()
     {
-        var scores = _dataService.GetTopScores(5);
-        string scoreText = "";
+        var scores = _dataService.GetTopScores();
+        string scoreText = "Top 5 Scores: \n";
         foreach (var score in scores)
         {
             scoreText += "Round: " + score.Round + ", Gold: " + score.Gold + "\n";

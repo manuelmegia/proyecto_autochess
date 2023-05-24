@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     private bool _isOffset;
     //añadido nuevo
     public GameObject personaje;
+    public bool Reserved { get; set; }
     // Método de inicialización de un Tile con offset
     public void Init(bool isOffset)
     {
