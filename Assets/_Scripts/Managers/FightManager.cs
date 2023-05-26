@@ -49,26 +49,28 @@ public class FightManager : MonoBehaviour
     
         foreach (var unit in units)
         {
-            if (unit != null && unit.OccupiedTile != null && !unit.IsAttacking)
-            {
-                var currentPosition = unit.OccupiedTile.transform.position;
-                var targetUnit = gridManager.FindClosestEnemyUnit(currentPosition, unit.Faction);
-
-                if (targetUnit != null)
+            if (unit.OccupiedTile.tag != "Bench") {
+                if (unit != null && unit.OccupiedTile != null && !unit.IsAttacking)
                 {
-                    var path = gridManager.FindPath(currentPosition, targetUnit.OccupiedTile.transform.position);
+                    var currentPosition = unit.OccupiedTile.transform.position;
+                    var targetUnit = gridManager.FindClosestEnemyUnit(currentPosition, unit.Faction);
 
-                    // Check if the path exists and the target tile is not occupied
-                    if (path != null && path.Count > 1 && !gridManager.IsTileOccupied(path[1]) && !path[1].Reserved) // Check if the target tile is occupied or reserved
+                    if (targetUnit != null)
                     {
-                        path[1].Reserved = true;
-                        Coroutine moveCoroutine = StartCoroutine(unit.MoveUnitToTile(path[1], 0.5f));
-                        moveCoroutines.Add(moveCoroutine);
-                    }
-                    else if (path != null && path.Count <= 2 && Vector3.Distance(currentPosition, targetUnit.OccupiedTile.transform.position) <= unit.AttackRange && !unit.IsAttacking)
-                    {
-                        Coroutine attackCoroutine = StartCoroutine(unit.AttackCoroutine(targetUnit, 0.5f));
-                        attackCoroutines.Add(attackCoroutine);
+                       var path = gridManager.FindPath(currentPosition, targetUnit.OccupiedTile.transform.position);
+
+                        // Check if the path exists and the target tile is not occupied
+                        if (path != null && path.Count > 1 && !gridManager.IsTileOccupied(path[1]) && !path[1].Reserved)
+                        {
+                            path[1].Reserved = true;
+                            Coroutine moveCoroutine = StartCoroutine(unit.MoveUnitToTile(path[1], 0.5f));
+                            moveCoroutines.Add(moveCoroutine);
+                        }
+                        else if (path != null && path.Count <= 2 && Vector3.Distance(currentPosition, targetUnit.OccupiedTile.transform.position) <= unit.AttackRange && !unit.IsAttacking)
+                        {
+                            Coroutine attackCoroutine = StartCoroutine(unit.AttackCoroutine(targetUnit, 0.5f));
+                            attackCoroutines.Add(attackCoroutine);
+                        }
                     }
                 }
             }
@@ -101,7 +103,10 @@ public class FightManager : MonoBehaviour
         {
             if (unit.Faction == Faction.Hero)
             {
-                heroesAlive = true;
+                if (unit.OccupiedTile.tag != "Bench")
+                {
+                    heroesAlive = true;
+                }
             }
             else if (unit.Faction == Faction.Enemy)
             {

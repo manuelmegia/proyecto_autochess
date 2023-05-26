@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 
     public Text roundText;
     public Text coinText;
+    public Text unitInfoText;
 
     private void Awake()
     {
@@ -28,5 +29,10 @@ public class UIManager : MonoBehaviour
     public void UpdateCoinText(int coins)
     {
         coinText.text = "Coins: " + coins;
+    }
+
+    public void UpdateStatsText(BaseUnit unit)
+    {
+        unitInfoText.text = "Unit: " + unit.Health;
     }
 }

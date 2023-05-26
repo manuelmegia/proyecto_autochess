@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
                 UIManager.Instance.UpdateCoinText(EconomyManager.Instance.coins);
                 var spawnedHero = Instantiate(heroPrefab);
                 spawnedHero.gameObject.SetActive(true);
-            
+
                 randomSpawnTile.SetUnit(spawnedHero);
                 spawnedHero.OccupiedTile = randomSpawnTile; 
             }

@@ -158,7 +158,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -185,3 +185,7 @@ MonoBehaviour:
   _baseColor: {r: 0.5943396, g: 0.1541919, b: 0.1541919, a: 0}
   _offsetColor: {r: 0, g: 0, b: 0, a: 0}
   _renderer: {fileID: 8480987438610355270}
+  _highlight: {fileID: 0}
+  _isWalkable: 0
+  OccupiedUnit: {fileID: 0}
+  personaje: {fileID: 0}

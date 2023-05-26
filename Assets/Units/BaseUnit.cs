@@ -82,7 +82,6 @@ public class BaseUnit : MonoBehaviour
         {
             targetUnit.Health -= AttackDamage;
 
-            // Display the remaining health of the target unit
             Debug.Log("Target unit " + targetUnit.UnitName + " has " + targetUnit.Health + " health remaining.");
 
             if (targetUnit.Health <= 0)
@@ -115,6 +114,12 @@ public class BaseUnit : MonoBehaviour
     public bool IsDead()
     {
         return Health <= 0;
-        // Replace this with your own logic to determine if the unit is dead
+    }
+    void OnMouseDown()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            UIManager.Instance.UpdateStatsText(this);
+        }
     }
 }

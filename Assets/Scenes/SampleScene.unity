@@ -1905,6 +1905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundText: {fileID: 1168806309}
   coinText: {fileID: 1862353502}
+  unitInfoText: {fileID: 1673477587}
 --- !u!1 &942414112
 GameObject:
   m_ObjectHideFlags: 0

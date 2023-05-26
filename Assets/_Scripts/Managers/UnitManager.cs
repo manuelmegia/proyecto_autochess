@@ -28,6 +28,7 @@ public class UnitManager : MonoBehaviour
 		}
 		enemyCount = 1;
     }
+
     public void SpawnHeroes()
 	{
 		var heroCount = 4;
