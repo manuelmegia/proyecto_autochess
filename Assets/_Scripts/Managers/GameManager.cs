@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
             case GameState.PreparationRound:
                 EconomyManager.Instance.CalculateCoins();
                 RoundManager.Instance.RepositionUnits();
+                StopAllCoroutines();
                 break;
             case GameState.FightState:
                 //FightManager.Instance.StartFight();

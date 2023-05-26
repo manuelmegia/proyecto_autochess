@@ -2,19 +2,32 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    public GameObject heroPrefab;
-    public Transform benchArea; // The area where new heroes are placed
+    public static ShopManager Instance;
 
-    public void PurchaseHero()
+    public BaseUnit heroPrefab;
+    private EconomyManager _economyManager;
+
+    private void Awake()
     {
-        if (EconomyManager.Instance.GetCoins() >= 1)
+        Instance = this;
+    }
+
+    public void SpawnHeroButtonClicked()
+    {
+        if (EconomyManager.Instance.coins >= 1)
         {
-            EconomyManager.Instance.DecreaseCoins(1);
-            UnitManager.Instance.SpawnBenchHeroes();
-        }
-        else
-        {
-            Debug.Log("Not enough coins to purchase hero.");
+            var randomSpawnTile = GridManager.Instance.GetHeroBenchSpawnTile();
+
+            if(randomSpawnTile != null)
+            {
+                EconomyManager.Instance.DecreaseCoins(1);
+                UIManager.Instance.UpdateCoinText(EconomyManager.Instance.coins);
+                var spawnedHero = Instantiate(heroPrefab);
+                spawnedHero.gameObject.SetActive(true);
+            
+                randomSpawnTile.SetUnit(spawnedHero);
+                spawnedHero.OccupiedTile = randomSpawnTile; 
+            }
         }
     }
 }

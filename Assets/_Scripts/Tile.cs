@@ -13,11 +13,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private bool _isWalkable;
     
     public BaseUnit OccupiedUnit;
+    public bool Reserved { get; set; }
     public bool Walkable => _isWalkable && OccupiedUnit == null;
     private bool _isOffset;
     //añadido nuevo
     public GameObject personaje;
-    public bool Reserved { get; set; }
     // Método de inicialización de un Tile con offset
     public void Init(bool isOffset)
     {
@@ -139,5 +139,4 @@ public class Tile : MonoBehaviour
         _highlight.SetActive(false);
         MenuManager.Instance.ShowTileInfo(null);
     }
-
 }

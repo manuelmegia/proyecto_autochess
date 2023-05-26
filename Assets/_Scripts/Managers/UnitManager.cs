@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class UnitManager : MonoBehaviour
 
 	public BaseHero SelectedHero;
 	public int enemyCount;
-
+	
 	public void IncreaseEnemyCount(int amount)
 	{
 		enemyCount += amount;
@@ -27,19 +28,6 @@ public class UnitManager : MonoBehaviour
 		}
 		enemyCount = 1;
     }
-    public void SpawnBenchHeroes()
-    {
-	    var heroCount = 1;
-	    for (int i = 0; i < heroCount; i++){
-		    var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
-		    var spawnedHero = Instantiate(randomPrefab);
-		    var randomSpawnTile = GridManager.Instance.GetHeroBenchSpawnTile();
-			
-		    randomSpawnTile.SetUnit(spawnedHero); // Make sure this line is called
-			
-		    spawnedHero.OccupiedTile = randomSpawnTile; // Add this line
-	    }
-    }
     public void SpawnHeroes()
 	{
 		var heroCount = 4;
@@ -48,9 +36,9 @@ public class UnitManager : MonoBehaviour
 			var spawnedHero = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
 			
-			randomSpawnTile.SetUnit(spawnedHero); // Make sure this line is called
+			randomSpawnTile.SetUnit(spawnedHero);
 			
-			spawnedHero.OccupiedTile = randomSpawnTile; // Add this line
+			spawnedHero.OccupiedTile = randomSpawnTile;
 		}
 		GameManager.Instance.ChangeState(GameState.SpawnEnemies);
 	}
@@ -62,7 +50,7 @@ public class UnitManager : MonoBehaviour
 			var spawnedEnemy = Instantiate(randomPrefab);
 			var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
 			
-			spawnedEnemy.OccupiedTile = randomSpawnTile; // Add this line
+			spawnedEnemy.OccupiedTile = randomSpawnTile;
 			randomSpawnTile.SetUnit(spawnedEnemy);
 		}
 		GameManager.Instance.ChangeState(GameState.FightState);
