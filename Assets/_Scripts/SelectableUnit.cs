@@ -23,6 +23,7 @@ public class SelectableUnit : MonoBehaviour
                 if (unit != null && unit == _baseUnit && GameManager.Instance.GameState == GameState.PreparationRound)
                 {
                     _isSelected = true;
+                    Debug.Log("click en heroe");
                 }
                 else if (unit == null && _isSelected)
                 {

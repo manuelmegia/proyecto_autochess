@@ -5,7 +5,7 @@ using UnityEngine;
 public class RoundManager : MonoBehaviour
 {
     public static RoundManager Instance;
-    private int enemyIncreasePerRound = 1; // Enemies to spawn each round
+    private int enemyIncreasePerRound = 1; 
     public int round;
     void Awake()
     {
@@ -16,12 +16,10 @@ public class RoundManager : MonoBehaviour
     public void EndRound()
     {
         round++;
-        // Increase the number of enemies to spawn in UnitManager
         UnitManager.Instance.IncreaseEnemyCount(enemyIncreasePerRound);
         UIManager.Instance.UpdateRoundText(round);
-        EconomyManager.Instance.CalculateCoins();
         UnitManager.Instance.SpawnEnemies();
-        //GameManager.Instance.ChangeState(GameState.PreparationRound);
+        GameManager.Instance.ChangeState(GameState.PreparationRound);
     }
 
     public void StartRound()
@@ -31,8 +29,7 @@ public class RoundManager : MonoBehaviour
 
     public void RepositionUnits()
     {
-        // Implement logic to reposition your hero units
-        // After repositioning, start the next round
+        UnitManager.Instance.RepositionUnitsFromBench();
         StartRound();
     }
 

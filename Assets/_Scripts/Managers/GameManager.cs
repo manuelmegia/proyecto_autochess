@@ -33,11 +33,11 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.PreparationRound:
                 EconomyManager.Instance.CalculateCoins();
-                RoundManager.Instance.RepositionUnits();
                 StopAllCoroutines();
                 break;
             case GameState.FightState:
                 //FightManager.Instance.StartFight();
+                RoundManager.Instance.RepositionUnits();
                 break;
             case GameState.EndState:
                 var unit= FindObjectsOfType<BaseUnit>();

@@ -65,4 +65,29 @@ public class UnitManager : MonoBehaviour
 		SelectedHero = hero;
 		MenuManager.Instance.ShowSelectedHero(hero);
 	}
+
+	public void RepositionUnitsFromBench()
+	{
+		var benchUnits = GameObject.FindGameObjectsWithTag("BenchHero");
+		var gridManager = GridManager.Instance;
+
+		foreach (var benchUnit in benchUnits)
+		{
+			var baseUnit = benchUnit.GetComponent<BaseUnit>();
+			if (baseUnit != null)
+			{
+				var spawnTile = gridManager.GetHeroSpawnTile();
+				if (spawnTile != null)
+				{
+					baseUnit.MoveToTile(spawnTile);
+					benchUnit.tag = "Hero";
+				}
+				else
+				{
+					Debug.LogWarning("No available tiles to spawn hero units.");
+					break;
+				}
+			}
+		}
+	}
 }

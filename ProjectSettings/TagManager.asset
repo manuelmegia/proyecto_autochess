@@ -8,6 +8,7 @@ TagManager:
   - Bench
   - Enemy
   - Hero
+  - BenchHero
   layers:
   - Default
   - TransparentFX
