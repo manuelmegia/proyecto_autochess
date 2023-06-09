@@ -139,7 +139,7 @@ public class FightManager : MonoBehaviour
         string scoreText = "Top 5 Scores: \n";
         foreach (var score in scores)
         {
-            scoreText += "Round: " + score.Round + ", Gold: " + score.Gold + "\n";
+            scoreText += "Round: " + score.Round + ", Gold: " + score.Gold + ", Time: " + score.Timestamp + "\n";
         }
         topScoresText.text = scoreText;
     }

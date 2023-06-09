@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,10 @@ public class DataService
 
     public void CreateScore(Score score)
     {
+        score.Timestamp = DateTime.Now; // Aquí es donde añades el timestamp
         _connection.Insert(score);
     }
 
-    /*public List<Score> GetTopScores(int limit)
-    {
-        return _connection.Table<Score>().OrderByDescending(x => x.Round).Take(limit).ToList();
-    }*/
     public IEnumerable<Score> GetTopScores()
     {
         const string query = "SELECT * FROM Score ORDER BY Round DESC, Gold DESC LIMIT 5";
@@ -39,4 +37,6 @@ public class Score
     public int Round { get; set; }
 
     public int Gold { get; set; }
+    
+    public DateTime Timestamp { get; set; } // Aquí es donde añades la nueva propiedad
 }
